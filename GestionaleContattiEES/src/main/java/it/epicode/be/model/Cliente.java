@@ -40,7 +40,7 @@ public class Cliente {
 	private Indirizzo indirizzoSedeOperativa;
 	@Enumerated(EnumType.STRING)
 	private TipoCliente tipo;
-	@OneToMany(mappedBy = "fattura")
+	@OneToMany(mappedBy = "cliente")
 	private List<Fattura> fatture;
 	
 	
