@@ -4,7 +4,7 @@ import javax.persistence.ManyToOne;
 
 public class Comune {
 	
-	private int id;
+	private Long id;
 	private String nomeComune;
 	@ManyToOne
 	private Provincia provincia;

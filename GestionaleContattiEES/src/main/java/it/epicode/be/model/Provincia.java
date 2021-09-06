@@ -6,7 +6,7 @@ import javax.persistence.OneToMany;
 
 public class Provincia {
 	
-	private int id;
+	private Long id;
 	private String nomeProvincia;
 	private String sigla;
 	private String regione;
