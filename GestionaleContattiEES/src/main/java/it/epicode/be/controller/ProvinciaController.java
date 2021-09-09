@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,24 +30,28 @@ public class ProvinciaController {
 	@Autowired
 	private ProvinciaService provinciaServ;
 	
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping
 	public ResponseEntity<Page<Provincia>> listaProvince(Pageable p){
 		Page<Provincia> pp = provinciaServ.getAllProvince(p);
 		return new ResponseEntity<>(pp, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/{id}")
 	public Optional<Provincia> getProvinciaById(@PathVariable Long id){
 		Optional<Provincia> trovata = provinciaServ.getProvinciaById(id);
 		return trovata;
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> aggiungiProvincia(@RequestBody Provincia pro){
 		Provincia aggiunta = provinciaServ.aggiungiProvincia(pro);
 		return new ResponseEntity<>(aggiunta, HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteProvinciaById(@PathVariable Long id){
 		Optional<Provincia> daEliminare = provinciaServ.getProvinciaById(id);
@@ -57,6 +62,7 @@ public class ProvinciaController {
 		return new ResponseEntity<>("L'id della provincia cercata non esiste", HttpStatus.NOT_FOUND);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateProvinciaById(@PathVariable Long id, @RequestBody Provincia prov) {
 		if (id != prov.getId()) {

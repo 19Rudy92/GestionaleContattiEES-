@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,24 +30,28 @@ public class StatoFatturaController {
 	@Autowired
 	private StatoFatturaService statoFatturaServ;
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping
-	public ResponseEntity<Page<StatoFattura>> listaStatiFattura(Pageable p) {
-		Page<StatoFattura> lsf = statoFatturaServ.getAllStatoFatture(p);
+	public ResponseEntity<List<StatoFattura>> listaStatiFattura() {
+		List<StatoFattura> lsf = statoFatturaServ.getAllStatoFatture();
 		return new ResponseEntity<>(lsf, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> aggiungiStatoFattura(@RequestBody StatoFattura sf) {
 		StatoFattura aggiunta = statoFatturaServ.aggiungiStatoFattura(sf);
 		return new ResponseEntity<>(aggiunta, HttpStatus.CREATED);
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/{id}")
 	public Optional<StatoFattura> getStatoFatturaById(@PathVariable Long id) {
 		Optional<StatoFattura> trovata = statoFatturaServ.getStatoFatturaById(id);
 		return trovata;
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteStatoFatturaByid(@PathVariable Long id) {
 		Optional<StatoFattura> daEliminare = statoFatturaServ.getStatoFatturaById(id);
@@ -57,6 +62,7 @@ public class StatoFatturaController {
 		return new ResponseEntity<>("Stato Fattura NotFound", HttpStatus.BAD_REQUEST);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateStatoFattura(@PathVariable Long id, @RequestBody StatoFattura sf) {
 		if (id != sf.getId()) {
@@ -64,7 +70,7 @@ public class StatoFatturaController {
 		}
 		try {
 			statoFatturaServ.updateStatoFattura(sf);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>("Modifica avvenuta con successo", HttpStatus.OK);
 		} catch (EntityNotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

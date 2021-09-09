@@ -29,4 +29,17 @@ public class ClienteDTO {
 		return new ClienteDTO(c.getId(), c.getNomeContatto(), c.getCognomeContatto(), c.getTelefonoContatto(),
 		c.getEmailContatto(), c.getDataInserimento(), c.getDataUltimoContatto(), c.getFatturatoAnnuale());
 	}
+	
+	public Cliente toCliente() {
+		Cliente c = new Cliente();
+		c.setId(id);
+		c.setNomeContatto(nomeCliente);
+		c.setCognomeContatto(cognomeCliente);
+		c.setTelefonoContatto(telefonoCliente);
+		c.setEmailContatto(nomeCliente);
+		c.setDataInserimento(dataInserimento);
+		c.setDataUltimoContatto(dataUltimoContatto);
+		c.setFatturatoAnnuale(fatturatoAnnuale);
+		return c;
+	}
 }

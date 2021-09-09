@@ -40,7 +40,8 @@ public class ComuneService {
 		Optional<Comune> oc = comuneRepo.findById(comune.getId());
 		if (oc.isEmpty()) {
 			throw new EntityNotFoundException("Il comune con id " + comune.getId() + " non esiste");
-		} else {
+		} 
+		else {
 			comuneRepo.save(comune);
 
 		}

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,24 +29,28 @@ public class FatturaController {
 	@Autowired
 	private FatturaService fatturaServ;
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping
 	public ResponseEntity<Page<Fattura>> listaFatture(Pageable p) {
 		Page<Fattura> pf = fatturaServ.getAllFatture(p);
 		return new ResponseEntity<>(pf, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/{id}")
 	public Optional<Fattura> getFatturaById(@PathVariable Long id) {
 		Optional<Fattura> trovata = fatturaServ.getFatturaById(id);
 		return trovata;
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> aggiungiFattura(@RequestBody Fattura fattura) {
 		Fattura aggiunta = fatturaServ.aggiungiFattura(fattura);
 		return new ResponseEntity<>(aggiunta, HttpStatus.CREATED);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteFatturaById(@PathVariable Long id) {
 		Optional<Fattura> daEliminare = fatturaServ.getFatturaById(id);
@@ -56,6 +61,7 @@ public class FatturaController {
 		return new ResponseEntity<>("L'id della fattura cercata non esiste", HttpStatus.NOT_FOUND);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> updateFattura(@PathVariable Long id, @RequestBody Fattura fattura) {
 		if (id != fattura.getId()) {

@@ -19,8 +19,8 @@ public class StatoFatturaService {
 	@Autowired
 	private StatoFatturaRepository statoFatturaRepo;
 	
-	public Page<StatoFattura> getAllStatoFatture(Pageable p){
-		return statoFatturaRepo.findAll(p);
+	public List<StatoFattura> getAllStatoFatture(){
+		return statoFatturaRepo.findAll();
 	}
 	
 	public StatoFattura aggiungiStatoFattura(StatoFattura statoFattura){
