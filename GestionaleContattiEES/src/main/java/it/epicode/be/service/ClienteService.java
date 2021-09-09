@@ -8,8 +8,10 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import it.epicode.be.dto.ClienteDTO;
 import it.epicode.be.model.Cliente;
 import it.epicode.be.repository.ClienteRepository;
 
@@ -51,8 +53,18 @@ public class ClienteService {
 		return clienteRepo.findByRagioneSocialeContainingIgnoreCase(nome, p);
 	}
 	
-	public Page<Cliente> findByFatturatoAnnuale(BigDecimal fatturatoAnnuale, Pageable p){
-		return clienteRepo.findByFatturatoAnnuale(fatturatoAnnuale, p);
+	public Page<Cliente> findByFatturatoAnnualeGreaterThanEqual(BigDecimal fatturatoAnnuale, Pageable p){
+		return clienteRepo.findByFatturatoAnnualeGreaterThanEqual(fatturatoAnnuale, p);
+	}
+	
+	public Page<Cliente> findByFatturatoAnnualeLessThanEqual(BigDecimal fatturatoAnnuale, Pageable p){
+		return clienteRepo.findByFatturatoAnnualeLessThanEqual(fatturatoAnnuale, p);
+	}
+
+	public Page<Cliente> findByFatturatoAnnualeBetween(BigDecimal fatturatoAnnualeMinimo,
+			BigDecimal fatturatoAnnualeMassimo, Pageable p) {
+		return clienteRepo.findByFatturatoAnnualeBetween(fatturatoAnnualeMinimo,
+				fatturatoAnnualeMassimo, p);
 	}
 	
 	

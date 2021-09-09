@@ -29,7 +29,7 @@ public class ComuneController {
 	@Autowired
 	private ComuneService comuneServ;
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<Comune>> listaComuni(Pageable p) {
 		Page<Comune> pc = comuneServ.getAllComuni(p);
@@ -43,7 +43,7 @@ public class ComuneController {
 		return new ResponseEntity<>(aggiunto, HttpStatus.CREATED);
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public Optional<Comune> getComuneById(@PathVariable Long id) {
 		Optional<Comune> trovato = comuneServ.getComuneById(id);

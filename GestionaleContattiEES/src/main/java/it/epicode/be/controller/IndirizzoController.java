@@ -30,7 +30,7 @@ public class IndirizzoController {
 	@Autowired
 	private IndirizzoService indirizzoServ;
 	
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<Indirizzo>> listaIndirizzi(Pageable p){
 		Page<Indirizzo> pi = indirizzoServ.getAllIndirizzi(p);
@@ -45,7 +45,7 @@ public class IndirizzoController {
 		return new ResponseEntity<>(aggiunto, HttpStatus.CREATED);
 	}
 	
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public Optional<Indirizzo> getIndirizzoById(@PathVariable Long id) {
 		Optional<Indirizzo> trovato = indirizzoServ.getIndirizzoById(id);

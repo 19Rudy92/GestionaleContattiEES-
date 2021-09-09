@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.util.Streamable;
 
+import it.epicode.be.dto.ClienteDTO;
 import it.epicode.be.model.Cliente;
 
 
@@ -15,6 +17,11 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 	
 //	Page<Cliente> findByNomeContainingIgnoreCase(String nomeContatto, Pageable p);
 	
-	Page<Cliente> findByFatturatoAnnuale(BigDecimal fatturatoAnnuale, Pageable p);
+	Page<Cliente> findByFatturatoAnnualeGreaterThanEqual(BigDecimal fatturatoAnnuale, Pageable p);
+	
+	Page<Cliente> findByFatturatoAnnualeLessThanEqual(BigDecimal fatturatoAnnuale, Pageable p);
+
+	Page<Cliente> findByFatturatoAnnualeBetween(BigDecimal fatturatoAnnualeMinimo,
+			BigDecimal fatturatoAnnualeMassimo, Pageable p);
 
 }

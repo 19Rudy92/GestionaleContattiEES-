@@ -27,7 +27,7 @@ public class Fattura {
 	@ManyToOne
 	private Cliente cliente;
 	@ManyToOne
-	private StatoFattura stato;
+	private StatoFattura statoFattura;
 	
 
 }

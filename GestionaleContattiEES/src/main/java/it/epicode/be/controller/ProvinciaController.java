@@ -30,14 +30,14 @@ public class ProvinciaController {
 	@Autowired
 	private ProvinciaService provinciaServ;
 	
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<Provincia>> listaProvince(Pageable p){
 		Page<Provincia> pp = provinciaServ.getAllProvince(p);
 		return new ResponseEntity<>(pp, HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public Optional<Provincia> getProvinciaById(@PathVariable Long id){
 		Optional<Provincia> trovata = provinciaServ.getProvinciaById(id);

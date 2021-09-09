@@ -30,7 +30,7 @@ public class StatoFatturaController {
 	@Autowired
 	private StatoFatturaService statoFatturaServ;
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<StatoFattura>> listaStatiFattura() {
 		List<StatoFattura> lsf = statoFatturaServ.getAllStatoFatture();
@@ -44,7 +44,7 @@ public class StatoFatturaController {
 		return new ResponseEntity<>(aggiunta, HttpStatus.CREATED);
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public Optional<StatoFattura> getStatoFatturaById(@PathVariable Long id) {
 		Optional<StatoFattura> trovata = statoFatturaServ.getStatoFatturaById(id);

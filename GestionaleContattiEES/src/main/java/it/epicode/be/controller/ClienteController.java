@@ -35,7 +35,7 @@ public class ClienteController {
 	@Autowired
 	private ClienteService clienteServ;
 
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<Page<ClienteDTO>> listaClienti(Pageable p) {
 		Page<ClienteDTO> pcDto = clienteServ.getAllClienti(p).map(ClienteDTO::fromCliente);
@@ -50,7 +50,7 @@ public class ClienteController {
 		return new ResponseEntity<>(ClienteDTO.fromCliente(aggiunto), HttpStatus.CREATED);
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Optional<ClienteDTO>> getClienteById(@PathVariable Long id) {
 		Optional<ClienteDTO> ocDto = clienteServ.findClienteById(id).map(ClienteDTO::fromCliente);
@@ -84,7 +84,7 @@ public class ClienteController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/ragione_sociale")
 	public ResponseEntity<Page<ClienteDTO>> getListaClientiPerNomeCon(@RequestParam String nome, Pageable p) {
 		List<ClienteDTO> lDto = clienteServ.findByParteDelNome(nome, p).stream().map(ClienteDTO::fromCliente)
@@ -93,10 +93,29 @@ public class ClienteController {
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/fatturato_annuale/{fatturatoAnnuale}")
-	public ResponseEntity<Page<ClienteDTO>> getListaClientiPerFatturatoAnnuale(@RequestParam BigDecimal fatturatoAnnuale, Pageable p){
-		List<ClienteDTO> lDto= clienteServ.findByFatturatoAnnuale(fatturatoAnnuale, p).stream().map(ClienteDTO::fromCliente)
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/fatturato_annuale_minimo")
+	public ResponseEntity<Page<ClienteDTO>> getListaClientiPerFatturatoAnnualeMinimo(@RequestParam BigDecimal fatturatoAnnuale, Pageable p){
+		List<ClienteDTO> lDto= clienteServ.findByFatturatoAnnualeGreaterThanEqual(fatturatoAnnuale, p).stream().map(ClienteDTO::fromCliente)
+				.collect(Collectors.toList());
+		Page<ClienteDTO> page = new PageImpl<>(lDto);
+		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/fatturato_annuale_massimo")
+	public ResponseEntity<Page<ClienteDTO>> getListaClientiPerFatturatoAnnualeMassimo(@RequestParam BigDecimal fatturatoAnnuale, Pageable p){
+		List<ClienteDTO> lDto= clienteServ.findByFatturatoAnnualeLessThanEqual(fatturatoAnnuale, p).stream().map(ClienteDTO::fromCliente)
+				.collect(Collectors.toList());
+		Page<ClienteDTO> page = new PageImpl<>(lDto);
+		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/fatturato_annuale_compreso")
+	public ResponseEntity<Page<ClienteDTO>> getListaClientiPerFatturatoAnnualeDaA(@RequestParam BigDecimal fatturatoAnnualeMinimo, @RequestParam BigDecimal fatturatoAnnualeMassimo,
+			Pageable p){
+		List<ClienteDTO> lDto= clienteServ.findByFatturatoAnnualeBetween(fatturatoAnnualeMinimo, fatturatoAnnualeMassimo, p).stream().map(ClienteDTO::fromCliente)
 				.collect(Collectors.toList());
 		Page<ClienteDTO> page = new PageImpl<>(lDto);
 		return new ResponseEntity<>(page, HttpStatus.OK);
