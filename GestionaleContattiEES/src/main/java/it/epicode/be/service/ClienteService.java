@@ -1,6 +1,7 @@
 package it.epicode.be.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -66,6 +67,16 @@ public class ClienteService {
 		return clienteRepo.findByFatturatoAnnualeBetween(fatturatoAnnualeMinimo,
 				fatturatoAnnualeMassimo, p);
 	}
+	
+	public Page<Cliente> findByDataInserimento(LocalDate dataInserimento, Pageable  p){
+		Page<Cliente> trovato = clienteRepo.findByDataInserimento(dataInserimento, p);
+		return trovato;
+		}
+	
+	public Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, Pageable  p){
+		Page<Cliente> trovato = clienteRepo.findByDataUltimoContatto(dataUltimoContatto, p);
+		return trovato;
+		}
 	
 	
 	

@@ -1,6 +1,7 @@
 package it.epicode.be.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -94,8 +96,8 @@ public class ClienteController {
 	}
 	
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	@GetMapping("/fatturato_annuale_minimo")
-	public ResponseEntity<Page<ClienteDTO>> getListaClientiPerFatturatoAnnualeMinimo(@RequestParam BigDecimal fatturatoAnnuale, Pageable p){
+	@GetMapping("/fatturato_annuale_minimo/{fatturatoAnnuale}")
+	public ResponseEntity<Page<ClienteDTO>> getListaClientiPerFatturatoAnnualeMinimo(@PathVariable BigDecimal fatturatoAnnuale, Pageable p){
 		List<ClienteDTO> lDto= clienteServ.findByFatturatoAnnualeGreaterThanEqual(fatturatoAnnuale, p).stream().map(ClienteDTO::fromCliente)
 				.collect(Collectors.toList());
 		Page<ClienteDTO> page = new PageImpl<>(lDto);
@@ -119,6 +121,20 @@ public class ClienteController {
 				.collect(Collectors.toList());
 		Page<ClienteDTO> page = new PageImpl<>(lDto);
 		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/data_inserimento/{data}")
+	public ResponseEntity<?> getClienteByDataInserimento(@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd")LocalDate data, Pageable p){
+		Page<ClienteDTO> pcDto = clienteServ.findByDataInserimento(data, p).map(ClienteDTO::fromCliente);
+		return new ResponseEntity<>(pcDto, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/data_ultimo_contatto/{data}")
+	public ResponseEntity<?> getClienteByDataUltimoContatto(@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd")LocalDate data, Pageable p){
+		Page<ClienteDTO> pcDto = clienteServ.findByDataUltimoContatto(data, p).map(ClienteDTO::fromCliente);
+		return new ResponseEntity<>(pcDto, HttpStatus.OK);
 	}
 	
 	

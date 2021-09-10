@@ -117,10 +117,10 @@ public class FatturaController {
 	}
 	
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	@GetMapping("/range_importo/")
-	public ResponseEntity<Page<FatturaDTO>> getListaFatturePerImporto(@RequestParam BigDecimal importoMinimo, @RequestParam BigDecimal importoMassimo,
+	@GetMapping("/range_importo/{importoMinimo}/{importoMassimo}")
+	public ResponseEntity<Page<FatturaDTO>> getListaFatturePerImporto(@PathVariable BigDecimal importoMinimo, @PathVariable BigDecimal importoMassimo,
 			Pageable p){
-		Page<FatturaDTO> lDto= fatturaServ.findByRangeImportiBetween(importoMinimo, importoMassimo, p).map(FatturaDTO::fromFattura);
+		Page<FatturaDTO> lDto= fatturaServ.findByRangeImportoBetween(importoMinimo, importoMassimo, p).map(FatturaDTO::fromFattura);
 		return new ResponseEntity<>(lDto, HttpStatus.OK);
 	}
 	

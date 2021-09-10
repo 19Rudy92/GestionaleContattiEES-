@@ -22,5 +22,6 @@ public class Comune {
 	private String nomeComune;
 	@ManyToOne
 	private Provincia provincia;
+	private String codiceComune;
 
 }

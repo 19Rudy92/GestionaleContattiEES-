@@ -70,7 +70,7 @@ public class FatturaService {
 		return trovata;
 	}
 
-	public Page<Fattura> findByRangeImportiBetween(BigDecimal importoMinimo, BigDecimal importoMassimo, Pageable p) {
+	public Page<Fattura> findByRangeImportoBetween(BigDecimal importoMinimo, BigDecimal importoMassimo, Pageable p) {
 		return fatturaRepo.findByImportoBetween(importoMinimo, importoMassimo, p);
 	}
 

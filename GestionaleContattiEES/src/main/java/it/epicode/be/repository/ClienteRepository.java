@@ -1,6 +1,7 @@
 package it.epicode.be.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +24,9 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 
 	Page<Cliente> findByFatturatoAnnualeBetween(BigDecimal fatturatoAnnualeMinimo,
 			BigDecimal fatturatoAnnualeMassimo, Pageable p);
+	
+	Page<Cliente> findByDataInserimento(LocalDate dataInserimento, Pageable p);
+	
+	Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, Pageable p);
 
 }
